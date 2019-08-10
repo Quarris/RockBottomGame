@@ -2,13 +2,11 @@ package de.ellpeck.rockbottom;
 
 import de.ellpeck.rockbottom.api.GameContent;
 import de.ellpeck.rockbottom.api.Registries;
+import de.ellpeck.rockbottom.api.item.*;
+import de.ellpeck.rockbottom.construction.criteria.CriteriaBreakTile;
 import de.ellpeck.rockbottom.api.construction.resource.ResUseInfo;
 import de.ellpeck.rockbottom.api.construction.smelting.FuelInput;
 import de.ellpeck.rockbottom.api.effect.BasicEffect;
-import de.ellpeck.rockbottom.api.item.ItemBasic;
-import de.ellpeck.rockbottom.api.item.ItemSword;
-import de.ellpeck.rockbottom.api.item.ItemTool;
-import de.ellpeck.rockbottom.api.item.ToolProperty;
 import de.ellpeck.rockbottom.api.tile.TileBasic;
 import de.ellpeck.rockbottom.api.util.reg.ResourceName;
 import de.ellpeck.rockbottom.api.world.gen.biome.level.BiomeLevel;
@@ -17,6 +15,8 @@ import de.ellpeck.rockbottom.construction.category.CategoryConstructionTable;
 import de.ellpeck.rockbottom.construction.category.CategoryManualConstruction;
 import de.ellpeck.rockbottom.construction.category.CategoryMortar;
 import de.ellpeck.rockbottom.construction.category.CategorySmelting;
+import de.ellpeck.rockbottom.construction.criteria.CriteriaPickupItem;
+import de.ellpeck.rockbottom.construction.criteria.CriteriaReachDepth;
 import de.ellpeck.rockbottom.item.*;
 import de.ellpeck.rockbottom.world.entity.*;
 import de.ellpeck.rockbottom.world.entity.player.knowledge.RecipeInformation;
@@ -34,7 +34,7 @@ public final class ContentRegistry {
         new TileAir().register();
         new TileSoil().register();
         new TileGrass().register();
-        new TileStone().register();
+        new TileBasic(ResourceName.intern("stone")).register();
         new TileGrassTuft().register();
         new TileLog().register();
         new TileLeaves().register();
@@ -42,7 +42,7 @@ public final class ContentRegistry {
         new TilePebbles().register();
         new TileFalling(ResourceName.intern("sand")).register();
         new TileBasic(ResourceName.intern("sandstone")).register();
-        new TileCoal().register();
+        new TileBasic(ResourceName.intern("coal")).register();
         new TileTorch(ResourceName.intern("torch")).register();
         new TileSnow().register();
         new TileLadder().register();
@@ -71,11 +71,11 @@ public final class ContentRegistry {
         new ItemTool(ResourceName.intern("brittle_axe"), 1.25F, 50, ToolProperty.AXE, 1).register();
         new ItemTool(ResourceName.intern("brittle_shovel"), 1.25F, 50, ToolProperty.SHOVEL, 1).register();
         new ItemSword(ResourceName.intern("brittle_sword"), 50, 4, 10, 1.5D, 0.25D).register();
-        new ItemConstructionTool(ResourceName.intern("wrench"), 100).register();
-        new ItemConstructionTool(ResourceName.intern("saw"), 100).register();
-        new ItemConstructionTool(ResourceName.intern("hammer"), 100).register();
-        new ItemConstructionTool(ResourceName.intern("mallet"), 100).register();
-        new ItemConstructionTool(ResourceName.intern("chisel"), 100).register();
+        new ItemBasicTool(ResourceName.intern("wrench"), 100).register();
+        new ItemBasicTool(ResourceName.intern("saw"), 100).register();
+        new ItemBasicTool(ResourceName.intern("hammer"), 100).register();
+        new ItemBasicTool(ResourceName.intern("mallet"), 100).register();
+        new ItemBasicTool(ResourceName.intern("chisel"), 100).register();
         new ItemFirework().register();
         new ItemStartNote().register();
         new ItemBasic(ResourceName.intern("plant_fiber")).register();
@@ -130,6 +130,10 @@ public final class ContentRegistry {
         Registries.WORLD_GENERATORS.register(ResourceName.intern("corn"), WorldGenCorn.class);
 
         Registries.INFORMATION_REGISTRY.register(RecipeInformation.REG_NAME, RecipeInformation.class);
+
+        new CriteriaBreakTile().register();
+        new CriteriaPickupItem().register();
+        new CriteriaReachDepth().register();
 
         new BasicEffect(ResourceName.intern("speed"), false, false, 36000, 10).register();
         new BasicEffect(ResourceName.intern("jump_height"), false, false, 36000, 20).register();

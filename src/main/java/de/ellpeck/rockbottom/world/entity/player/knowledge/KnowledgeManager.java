@@ -8,7 +8,7 @@ import de.ellpeck.rockbottom.api.data.set.DataSet;
 import de.ellpeck.rockbottom.api.data.set.part.PartDataSet;
 import de.ellpeck.rockbottom.api.entity.player.knowledge.IKnowledgeManager;
 import de.ellpeck.rockbottom.api.entity.player.knowledge.Information;
-import de.ellpeck.rockbottom.api.toast.Toast;
+import de.ellpeck.rockbottom.api.toast.IToast;
 import de.ellpeck.rockbottom.api.util.reg.ResourceName;
 import de.ellpeck.rockbottom.net.packet.toclient.PacketKnowledge;
 import de.ellpeck.rockbottom.world.entity.player.EntityPlayer;
@@ -112,7 +112,7 @@ public class KnowledgeManager implements IKnowledgeManager {
     }
 
     @Override
-    public void teachRecipe(ConstructionRecipe recipe, boolean announce) {
+    public void teachRecipe(ICompendiumRecipe recipe, boolean announce) {
         if (!recipe.isKnown(this.player)) {
             RecipeInformation information = new RecipeInformation(recipe);
             this.teachInformation(information, announce);
@@ -120,7 +120,7 @@ public class KnowledgeManager implements IKnowledgeManager {
     }
 
     @Override
-    public void teachRecipe(ConstructionRecipe recipe) {
+    public void teachRecipe(ICompendiumRecipe recipe) {
         this.teachRecipe(recipe, true);
     }
 
@@ -130,7 +130,7 @@ public class KnowledgeManager implements IKnowledgeManager {
             this.information.put(information.getName(), information);
 
             if (this.player.isLocalPlayer()) {
-                Toast toast = information.announceTeach();
+                IToast toast = information.announceTeach();
                 if (toast != null) {
                     RockBottomAPI.getGame().getToaster().displayToast(toast);
                 }
@@ -146,12 +146,12 @@ public class KnowledgeManager implements IKnowledgeManager {
     }
 
     @Override
-    public void forgetRecipe(ConstructionRecipe recipe, boolean announce) {
+    public void forgetRecipe(ICompendiumRecipe recipe, boolean announce) {
         this.forgetInformation(recipe.getKnowledgeInformationName(), announce);
     }
 
     @Override
-    public void forgetRecipe(ConstructionRecipe recipe) {
+    public void forgetRecipe(ICompendiumRecipe recipe) {
         this.forgetRecipe(recipe, true);
     }
 
@@ -162,7 +162,7 @@ public class KnowledgeManager implements IKnowledgeManager {
             this.information.remove(name);
 
             if (this.player.isLocalPlayer()) {
-                Toast toast = info.announceForget();
+                IToast toast = info.announceForget();
                 if (toast != null) {
                     RockBottomAPI.getGame().getToaster().displayToast(toast);
                 }

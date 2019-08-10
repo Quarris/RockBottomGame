@@ -414,23 +414,24 @@ public class Renderer implements IRenderer {
 
     @Override
     public void renderSlotInGui(IGameInstance game, IAssetManager manager, ItemInstance slot, float x, float y, float scale, boolean hovered, boolean canPlaceInto) {
+        renderSlotInGui(game, manager, slot, x, y, scale, hovered, canPlaceInto, true, game.getSettings().guiColor);
+    }
+
+    @Override
+    public void renderSlotInGui(IGameInstance game, IAssetManager manager, ItemInstance slot, float x, float y, float scale, boolean hovered, boolean canPlaceInto, boolean renderBackground, int colorOverride) {
         ITexture texture = manager.getTexture(SLOT_NAME);
-
-        int color = game.getSettings().guiColor;
-
-        if (!canPlaceInto) {
-            color = Colors.multiply(color, 0.5F);
-        } else if (!hovered) {
-            color = Colors.multiply(color, 0.75F);
+        if (renderBackground) {
+            if (!canPlaceInto) {
+                colorOverride = Colors.multiply(colorOverride, 0.5F);
+            } else if (!hovered) {
+                colorOverride = Colors.multiply(colorOverride, 0.75F);
+            }
+            texture.draw(x, y, texture.getRenderWidth() * scale, texture.getRenderHeight() * scale, colorOverride);
         }
-
-        texture.draw(x, y, texture.getRenderWidth() * scale, texture.getRenderHeight() * scale, color);
-
         if (slot != null) {
             this.renderItemInGui(game, manager, slot, x + 3F * scale, y + 3F * scale, scale, Colors.WHITE);
         }
     }
-
 
     @Override
     public void renderItemInGui(IGameInstance game, IAssetManager manager, ItemInstance slot, float x, float y, float scale, int color) {
@@ -441,6 +442,13 @@ public class Renderer implements IRenderer {
     public void renderItemInGui(IGameInstance game, IAssetManager manager, ItemInstance slot, float x, float y, float scale, int color, boolean displayAmount, boolean displayDurability) {
         Item item = slot.getItem();
 
+
+
+        IItemRenderer renderer = item.getRenderer();
+        if (renderer != null) {
+            renderer.render(game, manager, this, item, slot, x, y, 10F * scale, color);
+        }
+
         if (displayDurability) {
             if (item.useMetaAsDurability()) {
                 int meta = slot.getMeta();
@@ -450,13 +458,8 @@ public class Renderer implements IRenderer {
                 float r = 1F - percentage;
                 float g = percentage * 0.75F;
 
-                this.addFilledRect(x - 2F * scale, y + 12F * scale - 14F * scale * percentage, 14F * scale, 14F * scale * percentage, Colors.rgb(r, g, 0F, 0.45F));
+                this.addFilledRect(x - 1F * scale, y + 12F * scale - 3F * scale, 12F * scale * percentage, 2F * scale, Colors.rgb(r, g, 0F, 1));
             }
-        }
-
-        IItemRenderer renderer = item.getRenderer();
-        if (renderer != null) {
-            renderer.render(game, manager, this, item, slot, x, y, 10F * scale, color);
         }
 
         if (displayAmount) {
