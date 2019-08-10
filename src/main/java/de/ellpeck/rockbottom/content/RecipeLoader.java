@@ -8,9 +8,11 @@ import de.ellpeck.rockbottom.api.IGameInstance;
 import de.ellpeck.rockbottom.api.Registries;
 import de.ellpeck.rockbottom.api.RockBottomAPI;
 import de.ellpeck.rockbottom.api.construction.ConstructionTool;
+import de.ellpeck.rockbottom.api.construction.compendium.ICompendiumRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.construction.ConstructionRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.construction.KnowledgeConstructionRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.ICriteria;
+import de.ellpeck.rockbottom.api.construction.compendium.smithing.SmithingRecipe;
 import de.ellpeck.rockbottom.api.construction.resource.IUseInfo;
 import de.ellpeck.rockbottom.api.construction.resource.ItemUseInfo;
 import de.ellpeck.rockbottom.api.construction.resource.ResUseInfo;
@@ -21,6 +23,7 @@ import de.ellpeck.rockbottom.api.item.ItemInstance;
 import de.ellpeck.rockbottom.api.mod.IMod;
 import de.ellpeck.rockbottom.api.util.Util;
 import de.ellpeck.rockbottom.api.util.reg.ResourceName;
+import de.ellpeck.rockbottom.construction.ConstructionRegistry;
 
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -40,7 +43,7 @@ public class RecipeLoader implements IContentLoader<ConstructionRecipe> {
     @Override
     public void loadContent(IGameInstance game, ResourceName resourceName, String path, JsonElement element, String elementName, IMod loadingMod, ContentPack pack) throws Exception {
         if (!this.disabled.contains(resourceName)) {
-            if (ConstructionRecipe.getManual(resourceName) != null) {
+            if (ConstructionRegistry.getRecipe(resourceName) != null) {
                 RockBottomAPI.logger().info("Recipe with name " + resourceName + " already exists, not adding recipe for mod " + loadingMod.getDisplayName() + " with content pack " + pack.getName());
             } else {
                 String resPath = path + element.getAsString();
@@ -63,6 +66,7 @@ public class RecipeLoader implements IContentLoader<ConstructionRecipe> {
                     for (JsonElement toolRaw : toolsJson) {
                         JsonObject tool = toolRaw.getAsJsonObject();
                         Item item = Registries.ITEM_REGISTRY.get(new ResourceName(tool.get("name").getAsString()));
+                        // TODO change 'durability' to 'usage'
                         int durability = tool.has("durability") ? tool.get("durability").getAsInt() : 1;
 
                         if (item != null && durability > 0) {
@@ -99,7 +103,7 @@ public class RecipeLoader implements IContentLoader<ConstructionRecipe> {
                     }
                 }
 
-                ConstructionRecipe recipe;
+                ICompendiumRecipe recipe;
                 if ("manual".equals(type)) {
                     recipe = new ConstructionRecipe(resourceName, null, inputList, outputList, skill).registerManual();
                 } else if ("manual_knowledge".equals(type)) {
@@ -107,7 +111,11 @@ public class RecipeLoader implements IContentLoader<ConstructionRecipe> {
                 } else if ("construction_table".equals(type)) {
                     recipe = new ConstructionRecipe(resourceName, tools, inputList, outputList, skill).registerConstructionTable();
                 } else if ("construction_table_knowledge".equals(type)) {
-                    recipe = new KnowledgeConstructionRecipe(resourceName, tools, inputList, outputList, skill).registerConstructionTable();
+					recipe = new KnowledgeConstructionRecipe(resourceName, tools, inputList, outputList, skill).registerConstructionTable();
+				} else if ("smithing".equals(type)) {
+					recipe = new SmithingRecipe(resourceName, inputList, outputList, skill, false).register();
+				} else if ("smithing_knowledge".equals(type)) {
+                	recipe = new SmithingRecipe(resourceName, inputList, outputList, skill, true).register();
                 } else {
                     throw new IllegalArgumentException("Invalid recipe type " + type + " for recipe " + resourceName);
                 }

@@ -1,17 +1,20 @@
 package de.ellpeck.rockbottom.net.packet.toserver;
 
 import de.ellpeck.rockbottom.api.IGameInstance;
+import de.ellpeck.rockbottom.api.construction.compendium.ICompendiumRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.construction.ConstructionRecipe;
 import de.ellpeck.rockbottom.api.entity.player.AbstractEntityPlayer;
 import de.ellpeck.rockbottom.api.net.NetUtil;
 import de.ellpeck.rockbottom.api.net.packet.IPacket;
 import de.ellpeck.rockbottom.api.tile.entity.TileEntity;
 import de.ellpeck.rockbottom.api.util.reg.ResourceName;
+import de.ellpeck.rockbottom.construction.ConstructionRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.UUID;
 
+// TODO 0.4 Rename to more general crafting name
 public class PacketManualConstruction implements IPacket {
 
     private UUID playerId;
@@ -47,7 +50,7 @@ public class PacketManualConstruction implements IPacket {
         if (game.getWorld() != null) {
             AbstractEntityPlayer player = game.getWorld().getPlayer(this.playerId);
             if (player != null) {
-                ConstructionRecipe recipe = ConstructionRecipe.getManual(this.recipeName);
+                ICompendiumRecipe recipe = ConstructionRegistry.getRecipe(this.recipeName);
                 if (recipe != null && recipe.isKnown(player)) {
                     TileEntity machine = null;
                     recipe.playerConstruct(player, machine, this.amount);

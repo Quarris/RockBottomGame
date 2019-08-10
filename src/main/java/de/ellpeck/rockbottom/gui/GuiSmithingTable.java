@@ -3,9 +3,11 @@ package de.ellpeck.rockbottom.gui;
 import de.ellpeck.rockbottom.api.IGameInstance;
 import de.ellpeck.rockbottom.api.IRenderer;
 import de.ellpeck.rockbottom.api.Registries;
+import de.ellpeck.rockbottom.api.RockBottomAPI;
 import de.ellpeck.rockbottom.api.assets.IAssetManager;
 import de.ellpeck.rockbottom.api.construction.compendium.ICompendiumRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.construction.ConstructionRecipe;
+import de.ellpeck.rockbottom.api.construction.compendium.smithing.SmithingRecipe;
 import de.ellpeck.rockbottom.api.data.settings.Settings;
 import de.ellpeck.rockbottom.api.entity.player.AbstractEntityPlayer;
 import de.ellpeck.rockbottom.api.gui.GuiContainer;
@@ -136,22 +138,20 @@ public class GuiSmithingTable extends GuiContainer {
 		this.polaroids.clear();
 
 		boolean containsSelected = false;
-		for (ConstructionRecipe recipe : Registries.SMITHING_TABLE_RECIPES.values()) {
-			if (recipe.canUseTools(tile)) {
-				if (recipe.isKnown(this.player)) {
-					IInventory inv = this.player.getInv();
-					ComponentPolaroid polaroid = recipe.getPolaroidButton(this, this.player, recipe.canConstruct(inv, inv), true);
+		for (SmithingRecipe recipe : Registries.SMITHING_RECIPES.values()) {
+			if (recipe.isKnown(this.player)) {
+				IInventory inv = this.player.getInv();
+				ComponentPolaroid polaroid = recipe.getPolaroidButton(this, this.player, recipe.canConstruct(inv, inv), true);
 
-					polaroid.isSelected = this.selectedRecipe == recipe;
-					if (polaroid.isSelected) {
-						containsSelected = true;
-					}
-
-					this.polaroids.add(polaroid);
-
-				} else {
-					this.polaroids.add(new ComponentPolaroid(this, null, false, ComponentPolaroid.CONSTRUCTION_TEX, ComponentPolaroid.CONSTRUCTION_TEX_HIGHLIGHTED, ComponentPolaroid.CONSTRUCTION_TEX_SELECTED));
+				polaroid.isSelected = this.selectedRecipe == recipe;
+				if (polaroid.isSelected) {
+					containsSelected = true;
 				}
+
+				this.polaroids.add(polaroid);
+
+			} else {
+				this.polaroids.add(new ComponentPolaroid(this, null, false, ComponentPolaroid.CONSTRUCTION_TEX, ComponentPolaroid.CONSTRUCTION_TEX_HIGHLIGHTED, ComponentPolaroid.CONSTRUCTION_TEX_SELECTED));
 			}
 		}
 		if (!containsSelected) {

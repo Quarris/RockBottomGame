@@ -1,30 +1,26 @@
 package de.ellpeck.rockbottom.construction;
 
 import de.ellpeck.rockbottom.api.GameContent;
+import de.ellpeck.rockbottom.api.Registries;
+import de.ellpeck.rockbottom.api.construction.compendium.ICompendiumRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.construction.ConstructionRecipe;
 import de.ellpeck.rockbottom.api.item.Item;
-
-import java.util.ArrayList;
-import java.util.List;
+import de.ellpeck.rockbottom.api.util.reg.ResourceName;
 
 public final class ConstructionRegistry {
-    public static ConstructionRecipe chest;
-    public static ConstructionRecipe simpleFurnace;
-    public static ConstructionRecipe mortar;
-    public static ConstructionRecipe constructionTable;
+    public static ICompendiumRecipe chest;
+    public static ICompendiumRecipe simpleFurnace;
+    public static ICompendiumRecipe mortar;
+    public static ICompendiumRecipe constructionTable;
 
     public static void postInit() {
-        chest = getManual(GameContent.TILE_CHEST.getItem());
-        simpleFurnace = getManual(GameContent.TILE_SIMPLE_FURNACE.getItem());
-        mortar = getManual(GameContent.TILE_MORTAR.getItem());
-        constructionTable = getManual(GameContent.TILE_CONSTRUCTION_TABLE.getItem());
+        chest = getRecipe(GameContent.TILE_CHEST.getItem().getName());
+        simpleFurnace = getRecipe(GameContent.TILE_SIMPLE_FURNACE.getItem().getName());
+        mortar = getRecipe(GameContent.TILE_MORTAR.getItem().getName());
+        constructionTable = getRecipe(GameContent.TILE_CONSTRUCTION_TABLE.getItem().getName());
     }
 
-    private static ConstructionRecipe getManual(Item item) {
-        return ConstructionRecipe.getManual(item.getName());
+    public static ICompendiumRecipe getRecipe(ResourceName name) {
+        return Registries.ALL_RECIPES.get(name);
     }
-
-	private static ConstructionRecipe getConstruction(Item item) {
-		return ConstructionRecipe.getConstruction(item.getName());
-	}
 }
