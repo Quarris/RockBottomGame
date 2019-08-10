@@ -2,6 +2,7 @@ package de.ellpeck.rockbottom.world.entity.player.knowledge;
 
 import de.ellpeck.rockbottom.api.Registries;
 import de.ellpeck.rockbottom.api.RockBottomAPI;
+import de.ellpeck.rockbottom.api.construction.compendium.ICompendiumRecipe;
 import de.ellpeck.rockbottom.api.construction.compendium.construction.ConstructionRecipe;
 import de.ellpeck.rockbottom.api.data.set.DataSet;
 import de.ellpeck.rockbottom.api.data.set.part.PartDataSet;
@@ -86,7 +87,7 @@ public class KnowledgeManager implements IKnowledgeManager {
     }
 
     @Override
-    public boolean knowsRecipe(ConstructionRecipe recipe) {
+    public boolean knowsRecipe(ICompendiumRecipe recipe) {
         return this.knowsInformation(recipe.getKnowledgeInformationName());
     }
 

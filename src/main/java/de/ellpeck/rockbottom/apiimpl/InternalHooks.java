@@ -33,6 +33,7 @@ import de.ellpeck.rockbottom.api.item.ItemInstance;
 import de.ellpeck.rockbottom.api.render.item.IItemRenderer;
 import de.ellpeck.rockbottom.api.tile.Tile;
 import de.ellpeck.rockbottom.api.tile.TileLiquid;
+import de.ellpeck.rockbottom.api.tile.entity.ICraftingStation;
 import de.ellpeck.rockbottom.api.tile.entity.TileEntity;
 import de.ellpeck.rockbottom.api.tile.state.IStateHandler;
 import de.ellpeck.rockbottom.api.tile.state.TileProp;
@@ -53,7 +54,6 @@ import de.ellpeck.rockbottom.net.packet.toserver.PacketShiftClick;
 import de.ellpeck.rockbottom.world.entity.EntityItem;
 import de.ellpeck.rockbottom.world.entity.player.InteractionManager;
 import de.ellpeck.rockbottom.world.entity.player.statistics.StatisticList;
-import de.ellpeck.rockbottom.world.tile.entity.TileEntityConstructionTable;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -540,9 +540,9 @@ public class InternalHooks implements IInternalHooks {
     }
 
     @Override
-    public boolean useConstructionTableTool(TileEntity constructionTable, ConstructionTool tool, boolean simulate) {
-        if (constructionTable instanceof TileEntityConstructionTable) {
-            return ((TileEntityConstructionTable)constructionTable).damageTool(tool, simulate);
+    public boolean useCraftingTool(TileEntity station, ConstructionTool tool, boolean simulate) {
+        if (station instanceof ICraftingStation) {
+            return ((ICraftingStation)station).damageTool(tool, simulate);
         }
         return false;
     }

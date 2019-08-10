@@ -21,41 +21,47 @@ public final class ConstructionRegistry {
     public static ConstructionRecipe pestle;
     public static ConstructionRecipe simpleHoe;
     public static ConstructionRecipe constructionTable;
+    public static ConstructionRecipe smithingTable;
 
     public static void postInit() {
-        BRITTLE_TOOLS.add(getRecipe(GameContent.ITEM_BRITTLE_PICKAXE));
-        BRITTLE_TOOLS.add(getRecipe(GameContent.ITEM_BRITTLE_AXE));
-        BRITTLE_TOOLS.add(getRecipe(GameContent.ITEM_BRITTLE_SHOVEL));
-        BRITTLE_TOOLS.add(getRecipe(GameContent.ITEM_BRITTLE_SWORD));
+        BRITTLE_TOOLS.add(getManual(GameContent.ITEM_BRITTLE_PICKAXE));
+        BRITTLE_TOOLS.add(getManual(GameContent.ITEM_BRITTLE_AXE));
+        BRITTLE_TOOLS.add(getManual(GameContent.ITEM_BRITTLE_SHOVEL));
+        BRITTLE_TOOLS.add(getManual(GameContent.ITEM_BRITTLE_SWORD));
 
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_STONE_PICKAXE));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_STONE_AXE));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_STONE_SHOVEL));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_STONE_SWORD));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_WRENCH));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_SAW));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_HAMMER));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_MALLET));
-        STONE_TOOLS.add(getRecipe(GameContent.ITEM_CHISEL));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_STONE_PICKAXE));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_STONE_AXE));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_STONE_SHOVEL));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_STONE_SWORD));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_WRENCH));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_SAW));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_HAMMER));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_MALLET));
+        STONE_TOOLS.add(getManual(GameContent.ITEM_CHISEL));
 
-        COPPER_TOOLS.add(getRecipe(GameContent.ITEM_COPPER_PICKAXE));
-        COPPER_TOOLS.add(getRecipe(GameContent.ITEM_COPPER_AXE));
-        COPPER_TOOLS.add(getRecipe(GameContent.ITEM_COPPER_SHOVEL));
-        COPPER_TOOLS.add(getRecipe(GameContent.ITEM_COPPER_SWORD));
+        COPPER_TOOLS.add(getManual(GameContent.ITEM_COPPER_PICKAXE));
+        COPPER_TOOLS.add(getManual(GameContent.ITEM_COPPER_AXE));
+        COPPER_TOOLS.add(getManual(GameContent.ITEM_COPPER_SHOVEL));
+        COPPER_TOOLS.add(getManual(GameContent.ITEM_COPPER_SWORD));
 
 
-        ladder = getRecipe(GameContent.TILE_LADDER.getItem());
-        chest = getRecipe(GameContent.TILE_CHEST.getItem());
-        grassTorch = getRecipe(GameContent.TILE_GRASS_TORCH.getItem());
-        simpleFurnace = getRecipe(GameContent.TILE_SIMPLE_FURNACE.getItem());
-        torch = getRecipe(GameContent.TILE_TORCH.getItem());
-        mortar = getRecipe(GameContent.TILE_MORTAR.getItem());
-        pestle = getRecipe(GameContent.ITEM_PESTLE);
-        simpleHoe = getRecipe(GameContent.ITEM_SIMPLE_HOE);
-        constructionTable = getRecipe(GameContent.TILE_CONSTRUCTION_TABLE.getItem());
+        ladder = getConstruction(GameContent.TILE_LADDER.getItem());
+        chest = getConstruction(GameContent.TILE_CHEST.getItem());
+        grassTorch = getManual(GameContent.TILE_GRASS_TORCH.getItem());
+        simpleFurnace = getConstruction(GameContent.TILE_SIMPLE_FURNACE.getItem());
+        torch = getManual(GameContent.TILE_TORCH.getItem());
+        mortar = getManual(GameContent.TILE_MORTAR.getItem());
+        pestle = getManual(GameContent.ITEM_PESTLE);
+        simpleHoe = getManual(GameContent.ITEM_SIMPLE_HOE);
+        constructionTable = getManual(GameContent.TILE_CONSTRUCTION_TABLE.getItem());
+        smithingTable = getConstruction(GameContent.TILE_SMITHING_TABLE.getItem());
     }
 
-    private static ConstructionRecipe getRecipe(Item item) {
-        return ConstructionRecipe.forName(item.getName());
+    private static ConstructionRecipe getManual(Item item) {
+        return ConstructionRecipe.getManual(item.getName());
     }
+
+    private static ConstructionRecipe getConstruction(Item item) {
+    	return ConstructionRecipe.getConstruction(item.getName());
+	}
 }

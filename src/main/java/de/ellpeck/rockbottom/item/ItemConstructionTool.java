@@ -21,7 +21,7 @@ public class ItemConstructionTool extends ItemBasic {
         super.describeItem(manager, instance, desc, isAdvanced);
 
         int highest = this.getHighestPossibleMeta() + 1;
-        desc.add(manager.localize(ResourceName.intern("info.durability"), highest - instance.getMeta(), highest));
+        desc.add(manager.localize(ResourceName.intern("info.usage"), highest - instance.getMeta(), highest));
     }
 
     @Override

@@ -58,7 +58,7 @@ public class RecipeInformation extends Information {
     @Override
     public void load(DataSet set, IKnowledgeManager manager) {
         ResourceName recName = new ResourceName(set.getString("recipe_name"));
-        this.recipe = ConstructionRecipe.forName(recName);
+        this.recipe = ConstructionRecipe.getManual(recName);
     }
 
     @Override

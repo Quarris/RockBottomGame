@@ -20,7 +20,6 @@ import de.ellpeck.rockbottom.api.item.ItemInstance;
 import de.ellpeck.rockbottom.api.mod.IMod;
 import de.ellpeck.rockbottom.api.util.Util;
 import de.ellpeck.rockbottom.api.util.reg.ResourceName;
-import de.ellpeck.rockbottom.init.RockBottom;
 
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class RecipeLoader implements IContentLoader<ConstructionRecipe> {
     @Override
     public void loadContent(IGameInstance game, ResourceName resourceName, String path, JsonElement element, String elementName, IMod loadingMod, ContentPack pack) throws Exception {
         if (!this.disabled.contains(resourceName)) {
-            if (ConstructionRecipe.forName(resourceName) != null) {
+            if (ConstructionRecipe.getManual(resourceName) != null) {
                 RockBottomAPI.logger().info("Recipe with name " + resourceName + " already exists, not adding recipe for mod " + loadingMod.getDisplayName() + " with content pack " + pack.getName());
             } else {
                 String resPath = path + element.getAsString();

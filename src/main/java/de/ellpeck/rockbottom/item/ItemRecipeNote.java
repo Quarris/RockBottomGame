@@ -50,7 +50,7 @@ public class ItemRecipeNote extends ItemBasic {
                     if (entry.getValue() instanceof PartBoolean) {
                         if (Util.isResourceName(entry.getKey())) {
                             ResourceName name = new ResourceName(entry.getKey());
-                            ConstructionRecipe recipe = ConstructionRecipe.forName(name);
+                            ConstructionRecipe recipe = ConstructionRecipe.getManual(name);
                             if (recipe != null) {
                                 if (((PartBoolean) entry.getValue()).get()) {
                                     player.getKnowledge().teachRecipe(recipe);

@@ -6,7 +6,6 @@ import de.ellpeck.rockbottom.api.entity.player.AbstractEntityPlayer;
 import de.ellpeck.rockbottom.api.net.NetUtil;
 import de.ellpeck.rockbottom.api.net.packet.IPacket;
 import de.ellpeck.rockbottom.api.tile.entity.TileEntity;
-import de.ellpeck.rockbottom.api.util.Pos2;
 import de.ellpeck.rockbottom.api.util.reg.ResourceName;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -48,7 +47,7 @@ public class PacketManualConstruction implements IPacket {
         if (game.getWorld() != null) {
             AbstractEntityPlayer player = game.getWorld().getPlayer(this.playerId);
             if (player != null) {
-                ConstructionRecipe recipe = ConstructionRecipe.forName(this.recipeName);
+                ConstructionRecipe recipe = ConstructionRecipe.getManual(this.recipeName);
                 if (recipe != null && recipe.isKnown(player)) {
                     TileEntity machine = null;
                     recipe.playerConstruct(player, machine, this.amount);

@@ -50,6 +50,9 @@ public class InventoryPlayer extends Inventory {
                             player.getKnowledge().teachRecipe(recipe);
                         }
                     }
+                    if (ConstructionRegistry.smithingTable != null) {
+						player.getKnowledge().teachRecipe(ConstructionRegistry.smithingTable, true);
+					}
                 }
             });
         }

@@ -1,20 +1,18 @@
 package de.ellpeck.rockbottom.world.tile.entity;
 
 import de.ellpeck.rockbottom.api.GameContent;
-import de.ellpeck.rockbottom.api.IGameInstance;
-import de.ellpeck.rockbottom.api.construction.ConstructionTool;
 import de.ellpeck.rockbottom.api.data.set.DataSet;
 import de.ellpeck.rockbottom.api.inventory.CombinedInventory;
 import de.ellpeck.rockbottom.api.item.Item;
 import de.ellpeck.rockbottom.api.item.ItemInstance;
+import de.ellpeck.rockbottom.api.tile.entity.ICraftingStation;
 import de.ellpeck.rockbottom.api.tile.entity.IFilteredInventory;
 import de.ellpeck.rockbottom.api.tile.entity.TileEntity;
 import de.ellpeck.rockbottom.api.tile.entity.TileInventory;
 import de.ellpeck.rockbottom.api.world.IWorld;
 import de.ellpeck.rockbottom.api.world.layer.TileLayer;
-import de.ellpeck.rockbottom.item.ItemConstructionTool;
 
-public class TileEntityConstructionTable extends TileEntity {
+public class TileEntityConstructionTable extends TileEntity implements ICraftingStation {
 
     private final TileInventory chiselSlot = new TileInventory(this, inst -> inst != null && inst.getItem() == GameContent.ITEM_CHISEL);
     private final TileInventory hammerSlot = new TileInventory(this, inst -> inst != null && inst.getItem() == GameContent.ITEM_HAMMER);
@@ -33,28 +31,7 @@ public class TileEntityConstructionTable extends TileEntity {
     }
 
     @Override
-    public void update(IGameInstance game) {
-        super.update(game);
-    }
-
-    /**
-     * Damages the specified tool in the table if it is found
-     * @param tool Tool to be damaged
-     * @param simulate Should we only check for the existence of the tool?
-     * @return True if the tool exists
-     */
-    public boolean damageTool(ConstructionTool tool, boolean simulate) {
-        ItemInstance toolItem;
-        if (tool != null && (toolItem = getTool(tool.tool)) != null) {
-            if (!simulate) {
-                toolItem.getItem().takeDamage(toolItem, tool.durability);
-            }
-            return true;
-        }
-        return tool == null || tool.tool == null;
-    }
-
-    private ItemInstance getTool(Item tool) {
+    public ItemInstance getTool(Item tool) {
         if (tool == GameContent.ITEM_CHISEL) {
             return chiselSlot.get(0);
         } else if (tool == GameContent.ITEM_HAMMER) {
