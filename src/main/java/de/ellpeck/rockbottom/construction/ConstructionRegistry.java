@@ -21,7 +21,7 @@ public final class ConstructionRegistry {
     }
 
     private static ConstructionRecipe getManual(Item item) {
-        return ConstructionRecipe.forName(item.getName());
+        return ConstructionRecipe.getManual(item.getName());
     }
 
 	private static ConstructionRecipe getConstruction(Item item) {
